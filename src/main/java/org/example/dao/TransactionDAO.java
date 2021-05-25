@@ -7,8 +7,6 @@ import java.util.List;
 
 public interface TransactionDAO extends JpaRepository<Transaction, Integer> {
 
-//    findAllByPayerIdAndRecipientIdAndSrcAccNumAndDestAccNum
-
     Transaction findByPayerIdAndRecipientIdAndSrcAccNumAndDestAccNum
             (Integer payerId, Integer recipientId, Integer srcAccNumId, Integer destAccNumId);
 }

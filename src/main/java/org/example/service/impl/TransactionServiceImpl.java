@@ -1,7 +1,9 @@
 package org.example.service.impl;
 
 import lombok.RequiredArgsConstructor;
-import org.example.controller.dto.TransactionDto;
+import org.example.controller.dto.TransactionCreateManyPaymentResponseDto;
+import org.example.controller.dto.TransactionCreatePaymentDto;
+import org.example.controller.dto.TransactionCreatePaymentResponseDto;
 import org.example.dao.TransactionDAO;
 import org.example.model.Account;
 import org.example.model.Transaction;
@@ -9,6 +11,7 @@ import org.example.service.AccountService;
 import org.example.service.TransactionService;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -19,21 +22,22 @@ public class TransactionServiceImpl implements TransactionService {
     private final AccountService accountService;
 
     @Override
-    public Transaction save(Transaction transaction) {
-        if (transaction.getId() != null) {
-            try {
-                throw new Exception("Transaction already exists");
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-        return transactionDAO.save(makeTransaction(transaction));
+    public TransactionCreatePaymentResponseDto save(TransactionCreatePaymentDto transaction) {
+        Transaction transactionNew = new Transaction();
+        transactionNew.setSrcAccNum(transaction.getSrcAccNum());
+        transactionNew.setDestAccNum(transaction.getDestAccNum());
+        transactionNew.setAmount(transaction.getAmount());
+        transactionNew.setReason(transaction.getReason());
+        TransactionCreatePaymentResponseDto tr = new TransactionCreatePaymentResponseDto();
+        tr.setId(transactionDAO.save(makeTransaction(transactionNew)).getId());
+        return tr;
     }
 
 
     @Override
-    public List<Transaction> saveManyTransaction(List<Transaction> transactions) {
-        String status = "status : error";
+    public List<TransactionCreateManyPaymentResponseDto> saveManyTransaction(List<TransactionCreatePaymentDto> transactions) {
+        Transaction transactionNew;
+        List<TransactionCreateManyPaymentResponseDto> transactionsDto = new ArrayList<>();
         if (transactions.size() == 0) {
             try {
                 throw new Exception("There are no transactions to save");
@@ -41,25 +45,37 @@ public class TransactionServiceImpl implements TransactionService {
                 e.printStackTrace();
             }
         }
-        for (Transaction transaction : transactions) {
-            transactionDAO.save(makeTransaction(checkStatus(balanceCheck(accountService
-                    .findById(transaction.getSrcAccNum()),transaction),transaction)));
+        for (TransactionCreatePaymentDto transaction : transactions) {
+            TransactionCreateManyPaymentResponseDto transactionResponseDto = new TransactionCreateManyPaymentResponseDto();
+            transactionNew = conversionCreatePaymentDtoToTransaction(transaction);
+           transactionNew = transactionDAO.save(makeTransaction(checkStatus(balanceCheck(accountService
+                    .findById(transaction.getSrcAccNum()),transactionNew),transactionNew)));
+           transactionResponseDto.setId(transactionNew.getId());
+           transactionResponseDto.setStatus(transactionNew.getStatus());
+           transactionsDto.add(transactionResponseDto);
         }
-        return transactions;
+        return transactionsDto;
+    }
+
+    Transaction conversionCreatePaymentDtoToTransaction(TransactionCreatePaymentDto transactionDto) {
+        Transaction transaction = new Transaction();
+        transaction.setSrcAccNum(transactionDto.getSrcAccNum());
+        transaction.setDestAccNum(transactionDto.getDestAccNum());
+        transaction.setAmount(transactionDto.getAmount());
+        transaction.setReason(transactionDto.getReason());
+        return transaction;
     }
 
     @Override
     public Transaction findByPayerIdAndRecipientIdAndSrcAccNumAndDestAccNum
-            (TransactionDto transactionDto) {
-        return transactionDAO.findByPayerIdAndRecipientIdAndSrcAccNumAndDestAccNum
-                (transactionDto.getPayer().getId(), transactionDto.getRecipient().getId()
-                        , transactionDto.getSrcAccNum(), transactionDto.getDestAccNum());
+            (Integer payerId, Integer recipient, Integer srcAccNum, Integer destAccNum) {
+        return null;
     }
 
     public Transaction checkStatus(Boolean bool, Transaction transaction) {
-        String status = "\nstatus : ok";
+        String status = "ok";
         if (!bool) {
-             status = "\nstatus : error";
+             status = "error";
             transaction.setStatus(status);
         }
         transaction.setStatus(status);
@@ -79,14 +95,16 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     public Boolean balanceCheck(Account srcAcc, Transaction transaction) {
+        Boolean check = true;
         if (srcAcc.getBalance().compareTo(transaction.getAmount()) < 0) {
+            check = false;
             try {
                 throw new Exception("You don't have enough funds");
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        return true;
+        return check;
     }
 
     public void makeTransferOfFunds(Account srcAcc, Account destAcc, Transaction transaction) {

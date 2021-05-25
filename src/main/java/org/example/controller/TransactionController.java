@@ -1,7 +1,8 @@
 package org.example.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.example.controller.dto.TransactionDto;
+import org.example.controller.dto.TransactionCreatePaymentDto;
+import org.example.controller.dto.TransactionCreatePaymentResponseDto;
 import org.example.model.Transaction;
 import org.example.service.TransactionService;
 import org.springframework.http.HttpStatus;
@@ -18,31 +19,29 @@ public class TransactionController {
     private final TransactionService transactionService;
 
     @PutMapping
-    public ResponseEntity<String> save(@RequestBody Transaction transaction) {
+    public ResponseEntity<TransactionCreatePaymentResponseDto> save
+            (@RequestBody TransactionCreatePaymentDto transactionCreatePaymentDto) {
         try {
-            return new ResponseEntity<>(transactionService.save(transaction).toString(), HttpStatus.OK);
+            return new ResponseEntity<>(transactionService.save(transactionCreatePaymentDto), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
         }
     }
 
     @PutMapping(value = "transactions")
-    public ResponseEntity<String> saveManyTransaction(@RequestBody List<Transaction> list) {
+    public ResponseEntity<List> saveManyTransaction(@RequestBody List<TransactionCreatePaymentDto> list) {
         try {
-            return new ResponseEntity<>(transactionService.saveManyTransaction(list).toString(), HttpStatus.OK);
+            return new ResponseEntity<>(transactionService.saveManyTransaction(list), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
         }
     }
 
-    @PostMapping
-    public ResponseEntity<Transaction> findAllByPayerIdAndRecipientIdAndSrcAccNumAndDestAccNum
-            (@RequestBody TransactionDto transactionDto) {
-        try {
+    @GetMapping
+    public ResponseEntity<Transaction> findByPayerIdAndRecipientIdAndSrcAccNumAndDestAccNum
+            (@RequestParam Integer payerId, @RequestParam Integer recipient,
+             @RequestParam Integer srcAccNum, @RequestParam Integer destAccNum) {
             return new ResponseEntity<>(transactionService.findByPayerIdAndRecipientIdAndSrcAccNumAndDestAccNum
-                    (transactionDto), HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
-        }
+                    (payerId, recipient, srcAccNum, destAccNum), HttpStatus.OK);
     }
 }
