@@ -19,7 +19,7 @@ public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-    private Date timestamp = new Date();
+    private Date timesTamp = new Date();
     @Column(name = "src_acc_num", length = 50)
     private Integer srcAccNum;
     @Column(name = "dest_acc_num", length = 50)

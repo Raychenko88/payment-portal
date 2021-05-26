@@ -13,7 +13,7 @@ public interface TransactionService {
 
     public List<TransactionCreateManyPaymentResponseDto> saveManyTransaction(List<TransactionCreatePaymentDto> transactions);
 
-    Transaction findByPayerIdAndRecipientIdAndSrcAccNumAndDestAccNum
+    List<Transaction> findAllByPayerIdAndRecipientIdAndSrcAccNumAndDestAccNum
             (Integer payerId, Integer recipient, Integer srcAccNum, Integer destAccNum);
 
     Transaction update(Transaction transaction);

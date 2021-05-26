@@ -38,10 +38,12 @@ public class TransactionController {
     }
 
     @GetMapping
-    public ResponseEntity<Transaction> findByPayerIdAndRecipientIdAndSrcAccNumAndDestAccNum
-            (@RequestParam Integer payerId, @RequestParam Integer recipient,
-             @RequestParam Integer srcAccNum, @RequestParam Integer destAccNum) {
-            return new ResponseEntity<>(transactionService.findByPayerIdAndRecipientIdAndSrcAccNumAndDestAccNum
+    public ResponseEntity<List> findByPayerIdAndRecipientIdAndSrcAccNumAndDestAccNum
+            (@RequestParam(value = "payer_id", required=false) Integer payerId,
+             @RequestParam(value = "recipient_id", required=false) Integer recipient,
+             @RequestParam(value = "source_acc_id", required=false) Integer srcAccNum,
+             @RequestParam(value = "dest_acc_id", required=false) Integer destAccNum) {
+            return new ResponseEntity<>(transactionService.findAllByPayerIdAndRecipientIdAndSrcAccNumAndDestAccNum
                     (payerId, recipient, srcAccNum, destAccNum), HttpStatus.OK);
     }
 }
