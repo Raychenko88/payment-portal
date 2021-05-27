@@ -18,17 +18,17 @@ public class TransactionController {
 
     private final TransactionService transactionService;
 
-    @PutMapping
+    @PostMapping
     public ResponseEntity<TransactionCreatePaymentResponseDto> save
             (@RequestBody TransactionCreatePaymentDto transactionCreatePaymentDto) {
         try {
-            return new ResponseEntity<>(transactionService.save(transactionCreatePaymentDto), HttpStatus.OK);
+            return new ResponseEntity<>(transactionService.save(transactionCreatePaymentDto), HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
         }
     }
 
-    @PutMapping(value = "transactions")
+    @PostMapping(value = "transactions")
     public ResponseEntity<List> saveManyTransaction(@RequestBody List<TransactionCreatePaymentDto> list) {
         try {
             return new ResponseEntity<>(transactionService.saveManyTransaction(list), HttpStatus.OK);

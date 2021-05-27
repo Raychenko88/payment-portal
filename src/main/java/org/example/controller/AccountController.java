@@ -18,16 +18,7 @@ public class AccountController {
 
     private final AccountService accountService;
 
-//    @PutMapping
-//    public ResponseEntity<Account> save(@RequestBody Account account) {
-//        try {
-//            return new ResponseEntity<>(accountService.save(account), HttpStatus.OK);
-//        } catch (Exception e) {
-//            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
-//        }
-//    }
-
-    @GetMapping(path = "/{id}")
+    @GetMapping
     public ResponseEntity<List> findAllByUserId(@RequestParam  Integer userId) {
         try {
             return new ResponseEntity<>(accountService.findAllByUserId(userId), HttpStatus.OK);

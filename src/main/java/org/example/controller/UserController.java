@@ -2,6 +2,7 @@ package org.example.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.example.controller.dto.UserAndAccountDto;
+import org.example.controller.dto.UserAndAccountResponseDto;
 import org.example.model.User;
 import org.example.service.UserService;
 import org.springframework.data.domain.Page;
@@ -19,10 +20,10 @@ public class UserController {
 
     private final UserService userService;
 
-    @PutMapping
-    public ResponseEntity<String> save(@RequestBody UserAndAccountDto userAndAccountDto) {
+    @PostMapping
+    public ResponseEntity<UserAndAccountResponseDto> save(@RequestBody UserAndAccountDto userAndAccountDto) {
         try {
-            return new ResponseEntity<>(userService.save(userAndAccountDto).toString(), HttpStatus.OK);
+            return new ResponseEntity<>(userService.save(userAndAccountDto), HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
         }

@@ -2,6 +2,7 @@ package org.example.service.impl;
 
 import lombok.RequiredArgsConstructor;
 import org.example.controller.dto.UserAndAccountDto;
+import org.example.controller.dto.UserAndAccountResponseDto;
 import org.example.dao.AccountDAO;
 import org.example.dao.UserDAO;
 import org.example.model.Account;
@@ -24,7 +25,7 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public UserAndAccountDto save(UserAndAccountDto userAndAccountDto) {
+    public UserAndAccountResponseDto save(UserAndAccountDto userAndAccountDto) {
         if (userAndAccountDto.getId() != null) {
             try {
                 throw new Exception("User already exists");
@@ -36,14 +37,15 @@ public class UserServiceImpl implements UserService {
         user.setFirstName(userAndAccountDto.getFirstName());
         user.setLastName(userAndAccountDto.getLastName());
          user = userDAO.save(user);
-        userAndAccountDto.setId(user.getId());
+        UserAndAccountResponseDto uard = new UserAndAccountResponseDto();
+        uard.setId(user.getId());
         if (userAndAccountDto.getAccounts().size() > 0) {
             for (Account ac : userAndAccountDto.getAccounts()) {
                 ac.setUser(user);
                 accountDAO.save(ac);
             }
         }
-        return userAndAccountDto;
+        return uard;
     }
 
     @Override

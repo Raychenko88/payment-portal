@@ -69,8 +69,6 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     public List<Transaction> findAllByPayerIdAndRecipientIdAndSrcAccNumAndDestAccNum
             (Integer payerId, Integer recipient, Integer srcAccNum, Integer destAccNum) {
-        System.out.println(transactionDAO.findAllByPayerIdAndRecipientIdAndSrcAccNumAndDestAccNum
-                (payerId, recipient, srcAccNum, destAccNum).size());
         return transactionDAO.findAllByPayerIdAndRecipientIdAndSrcAccNumAndDestAccNum
                 (payerId, recipient, srcAccNum, destAccNum);
     }

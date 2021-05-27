@@ -8,9 +8,6 @@ import java.util.List;
 
 @Setter
 @Getter
-@AllArgsConstructor
-@NoArgsConstructor
-@Builder
 public class UserAndAccountDto {
 
     private Integer id;
