@@ -13,16 +13,8 @@ public interface TransactionService {
 
     public List<TransactionCreateManyPaymentResponseDto> saveManyTransaction(List<TransactionCreatePaymentDto> transactions);
 
-    List<Transaction> findAllByPayerIdAndRecipientIdAndSrcAccNumAndDestAccNum
+    List<Transaction> findByParameters
             (Integer payerId, Integer recipient, Integer srcAccNum, Integer destAccNum);
 
-    Transaction update(Transaction transaction);
-
-    Transaction findById(Integer id);
-
-    List<Transaction> findAll();
-
     public Transaction makeTransaction(Transaction transaction);
-
-    void delete(Transaction transaction);
 }

@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -67,9 +68,9 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     @Override
-    public List<Transaction> findAllByPayerIdAndRecipientIdAndSrcAccNumAndDestAccNum
+    public List<Transaction> findByParameters
             (Integer payerId, Integer recipient, Integer srcAccNum, Integer destAccNum) {
-        return transactionDAO.findAllByPayerIdAndRecipientIdAndSrcAccNumAndDestAccNum
+        return transactionDAO.findByParameters
                 (payerId, recipient, srcAccNum, destAccNum);
     }
 
@@ -127,29 +128,5 @@ public class TransactionServiceImpl implements TransactionService {
             makeTransferOfFunds(srcAcc, destAcc, transaction);
         }
         return transaction;
-    }
-
-
-
-
-
-    @Override
-    public Transaction update(Transaction transaction) {
-        return null;
-    }
-
-    @Override
-    public Transaction findById(Integer id) {
-        return null;
-    }
-
-    @Override
-    public List<Transaction> findAll() {
-        return null;
-    }
-
-    @Override
-    public void delete(Transaction transaction) {
-
     }
 }
