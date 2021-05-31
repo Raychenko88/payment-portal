@@ -6,6 +6,7 @@ import org.example.controller.dto.TransactionCreatePaymentResponseDto;
 import org.example.model.Transaction;
 import org.example.service.TransactionService;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,7 +14,8 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(value = "transaction")
+@RequestMapping(value = "transaction", consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE}
+        , produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
 public class TransactionController {
 
     private final TransactionService transactionService;

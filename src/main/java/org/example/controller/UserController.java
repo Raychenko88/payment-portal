@@ -22,8 +22,6 @@ public class UserController {
 
     private final UserService userService;
 
-//    @PostMapping(value = "user-json", consumes = MediaType.APPLICATION_JSON_VALUE
-//            , produces = MediaType.APPLICATION_JSON_VALUE)
     @PostMapping
     public ResponseEntity<UserAndAccountResponseDto> save(@RequestBody UserAndAccountDto userAndAccountDto) {
         try {
@@ -32,14 +30,4 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
         }
     }
-
-//    @PostMapping(value = "user-xml", consumes = MediaType.APPLICATION_XML_VALUE
-//            , produces =  MediaType.APPLICATION_XML_VALUE)
-//    public ResponseEntity<UserAndAccountResponseDto> saveXml(@RequestBody UserAndAccountDto userAndAccountDto) {
-//        try {
-//            return new ResponseEntity<>(userService.save(userAndAccountDto), HttpStatus.CREATED);
-//        } catch (Exception e) {
-//            return new ResponseEntity<>(HttpStatus.NOT_ACCEPTABLE);
-//        }
-//    }
 }

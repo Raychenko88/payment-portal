@@ -13,8 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-//@RestController
-@Controller
+@RestController
 @RequiredArgsConstructor
 @RequestMapping(value = "account", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})
 public class AccountController {
