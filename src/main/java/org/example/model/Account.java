@@ -4,13 +4,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.math.BigDecimal;
 
+@XmlRootElement
 @Setter
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 @Entity
 @Table(name = "accounts")
 public class Account {
@@ -19,9 +21,11 @@ public class Account {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
     @Column(name = "account_num", length = 50)
+    @XmlElement(name = "account_num")
     @JsonProperty("account_num")
     private String accountNum;
     @Column(name = "account_type", length = 50)
+    @XmlElement(name = "account_type")
     @JsonProperty("account_type")
     private String accountType;
     private BigDecimal balance;
